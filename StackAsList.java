@@ -1,353 +1,325 @@
-import java.util.NoSuchElementException;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.border.*;
 
-public class StackAsList {
-	public Node first;import java.util.NoSuchElementException;
+/**
+ * A graphical user interface for the calculator. No calculation is being
+ * done here. This class is responsible just for putting up the display on 
+ * screen. It then refers to the "CalcEngine" to do all the real work.
+ * 
+ * @author David J. Barnes and Michael Kolling
+ * @version 2008.03.30
+ */
+public class UserInterface
+    implements ActionListener
+{
+    private CalcEngine calc;
+    private boolean showingAuthor;
 
-public class StackAsList {
-	public Node first;
-	public int totalNumberOfNodes = 0;
-	
-	// F?gt an der ersten Stelle des Stacks ein Objekt hinzu
-	public void addFirstNode(Object object) {
-		Node last = new Node(object, first);
-		first = last;
-		totalNumberOfNodes ++;
-	}
-	
-	// ?berpr?ft, ob die Liste leer ist
-	public boolean isEmpty() {
-		if (first == null) { return true; }
-		else return false;
-	}
-	
-	// Gibt den Inhalt des ersten Nodes wieder
-	public Object peek() {
-		if (first == null) { throw new NoSuchElementException(); }
-		Object object = first.data;
-		return object;
-	}
-	
-	//Gib mir ein peek aus, das in ein String umgewandelt wurde
-	public String peekAsString() {
-		if (first == null) { throw new NoSuchElementException(); }
-		String string = "";
-		string = string + toString(first.data);
-		return string;
-	}
-	
-	// Druckt alle Objekte im Node aus.
-	// Startet mit der ersten Position.
-	// Jedes Objekt erh?lt eine neue Zeile.
-	public void printAllNodes() {
-		Node currentNode = first;		
-		while (currentNode.next != null)
-		{
-			System.out.println(toString(currentNode.data));
-			currentNode = currentNode.next;
-		}
-		if (currentNode.next == null) {
-			System.out.println(toString(currentNode.data));
-		}
-	}
-	public String allNodesToString() {
-		Node currentNode = first;
-		String string = "";
-		while (currentNode.next != null)
-		{
-			string = string + toString(currentNode.data);
-			currentNode = currentNode.next;
-		}
-		if (currentNode.next == null) {
-			string = string + toString(currentNode.data);
-		}
-		return string;
-	}
-	
-	// Entfernt das Objekt an der ersten Position im Stack.
-	public Object removeFirst() {
-		if(first == null) { throw new NoSuchElementException();}
-		Object object = first.data;
-		first = first.next;
-		return object;
-	}
-	
-	// Initialisiert den Stack ohne Inhalt.
-	public StackAsList() {
-		first = null;
-	}
-	
-	// Erstellt einen Listen-Iterator
-	public StackListIterator listIterator() {
-		return new StackListIterator();
-	}
-	
-	// Macht aus einem Objekt einen String
-	public String toString(Object object) {
-		String newString = "" + object;
-		return newString;
-	}
-	
-	// Definiert die Klasse "Node"
-	private class Node{
-		Object data;
-		Node next;
-		private Node() {
-		}
-		private Node(Object object) {
-			data = object;
-		}
-		private Node(Object object, Node nextNode) {
-			data = object;
-			next = nextNode;
-		}
-	}
-	
-	// Definiert die Klasse "StackListIterator"
-	class StackListIterator {
-		private Node position;
-		private Node previous;
-		private boolean isAfterNext;
-		
-		// Initialisiert den Iterator bevore der ersten Stelle.
-		public StackListIterator() {
-			position = null;
-			previous = null;
-			isAfterNext = false;
-		}
-		
-		// Bewegt den Iterator zur nachfolgenden Stelle.
-		public Object next() {
-			if (!hasNext()) { throw new NoSuchElementException();}
-			previous = position;
-			isAfterNext = true;
-			
-			if (position == null){
-				position = first; 
-			}
-			else {
-				position = position.next;
-			}
-			return position.data;
-		}
-		
-		// Boolean, der pr?ft, ob das ausgew?hlte Objekt ein nachfolgendes hat
-		public boolean hasNext() {
-			if (position == null) {
-				return first != null;
-			}
-			else {
-				return position.next != null;
-			}
-		}
-		
-		// F?gt ein Objekt an der ausgew?hlten Stelle hinzu
-		public void add(Object object) {
-			if (position == null) {
-				addFirstNode(object);
-				position = first;
-			}
-			else {
-				Node newNode = new Node(object, position.next);
-				position.next = newNode;
-				position = newNode;
-			}
-			totalNumberOfNodes ++;
-			isAfterNext = false;
-		}
-		
-		// Entfernt ein Objekt an der ausgew?hlten Stelle
-		public void remove() {
-			if(!isAfterNext) { throw new IllegalStateException();}
-			if(position == first) {
-				removeFirst();
-			}
-			else {
-				previous.next = position.next;
-			}
-			position = previous;
-			totalNumberOfNodes --;
-			isAfterNext = false;
-		}
-		
-		// Ver?ndert das Objekt an der ausgew?hlten Stelle
-		public void set(Object object) {
-			if(!isAfterNext) { throw new IllegalStateException();}
-			position.data = object;
-		}
-	}
-	
+    private JFrame frame;
+    private JFrame hexFrame;
+    private JFrame setFrame;
+    private JTextField display;
+    private JTextField displayInputOne;
+    private JTextField displayInputTwo;
+    private JTextField displayOutput;
+    private JLabel status;
+    private CustomSet customSet;
+    public static boolean hex = false;
+    public static boolean set = false;
 
-}
-	public int totalNumberOfNodes = 0;
-	
-	// F?gt an der ersten Stelle des Stacks ein Objekt hinzu
-	public void addFirstNode(Object object) {
-		Node last = new Node(object, first);
-		first = last;
-		totalNumberOfNodes ++;
-	}
-	
-	// ?berpr?ft, ob die Liste leer ist
-	public boolean isEmpty() {
-		if (first == null) { return true; }
-		else return false;
-	}
-	
-	// Gibt den Inhalt des ersten Nodes wieder
-	public Object peek() {
-		if (first == null) { throw new NoSuchElementException(); }
-		Object object = first.data;
-		return object;
-	}
-	
-	//Gib mir ein peek aus, das in ein String umgewandelt wurde
-	public String peekAsString() {
-		if (first == null) { throw new NoSuchElementException(); }
-		String string = "";
-		string = string + toString(first.data);
-		return string;
-	}
-	
-	// Druckt alle Objekte im Node aus.
-	// Startet mit der ersten Position.
-	// Jedes Objekt erh?lt eine neue Zeile.
-	public void printAllNodes() {
-		Node currentNode = first;		
-		while (currentNode.next != null)
-		{
-			System.out.println(toString(currentNode.data));
-			currentNode = currentNode.next;
-		}
-		if (currentNode.next == null) {
-			System.out.println(toString(currentNode.data));
-		}
-	}
-	public String allNodesToString() {
-		Node currentNode = first;
-		String string = "";
-		while (currentNode.next != null)
-		{
-			string = string + toString(currentNode.data);
-			currentNode = currentNode.next;
-		}
-		if (currentNode.next == null) {
-			string = string + toString(currentNode.data);
-		}
-		return string;
-	}
-	
-	// Entfernt das Objekt an der ersten Position im Stack.
-	public Object removeFirst() {
-		if(first == null) { throw new NoSuchElementException();}
-		Object object = first.data;
-		first = first.next;
-		return object;
-	}
-	
-	// Initialisiert den Stack ohne Inhalt.
-	public StackAsList() {
-		first = null;
-	}
-	
-	// Erstellt einen Listen-Iterator
-	public StackListIterator listIterator() {
-		return new StackListIterator();
-	}
-	
-	// Macht aus einem Objekt einen String
-	public String toString(Object object) {
-		String newString = "" + object;
-		return newString;
-	}
-	
-	// Definiert die Klasse "Node"
-	private class Node{
-		Object data;
-		Node next;
-		private Node() {
-		}
-		private Node(Object object) {
-			data = object;
-		}
-		private Node(Object object, Node nextNode) {
-			data = object;
-			next = nextNode;
-		}
-	}
-	
-	// Definiert die Klasse "StackListIterator"
-	class StackListIterator {
-		private Node position;
-		private Node previous;
-		private boolean isAfterNext;
-		
-		// Initialisiert den Iterator bevore der ersten Stelle.
-		public StackListIterator() {
-			position = null;
-			previous = null;
-			isAfterNext = false;
-		}
-		
-		// Bewegt den Iterator zur nachfolgenden Stelle.
-		public Object next() {
-			if (!hasNext()) { throw new NoSuchElementException();}
-			previous = position;
-			isAfterNext = true;
-			
-			if (position == null){
-				position = first; 
-			}
-			else {
-				position = position.next;
-			}
-			return position.data;
-		}
-		
-		// Boolean, der pr?ft, ob das ausgew?hlte Objekt ein nachfolgendes hat
-		public boolean hasNext() {
-			if (position == null) {
-				return first != null;
-			}
-			else {
-				return position.next != null;
-			}
-		}
-		
-		// F?gt ein Objekt an der ausgew?hlten Stelle hinzu
-		public void add(Object object) {
-			if (position == null) {
-				addFirstNode(object);
-				position = first;
-			}
-			else {
-				Node newNode = new Node(object, position.next);
-				position.next = newNode;
-				position = newNode;
-			}
-			totalNumberOfNodes ++;
-			isAfterNext = false;
-		}
-		
-		// Entfernt ein Objekt an der ausgew?hlten Stelle
-		public void remove() {
-			if(!isAfterNext) { throw new IllegalStateException();}
-			if(position == first) {
-				removeFirst();
-			}
-			else {
-				previous.next = position.next;
-			}
-			position = previous;
-			totalNumberOfNodes --;
-			isAfterNext = false;
-		}
-		
-		// Ver?ndert das Objekt an der ausgew?hlten Stelle
-		public void set(Object object) {
-			if(!isAfterNext) { throw new IllegalStateException();}
-			position.data = object;
-		}
-	}
-	
+    /**
+     * Create a user interface.
+     * @param engine The calculator engine.
+     */
+    public UserInterface(CalcEngine engine)
+    {
+        calc = engine;
+        showingAuthor = true;
+        makeFrame();
+        frame.setVisible(true);
+        makeSetFrame();
+        setFrame.setVisible(false);
+        makeHexFrame();
+        hexFrame.setVisible(false);
+    }
 
+    /**
+     * Set the visibility of the interface.
+     * @param visible true if the interface is to be made visible, false otherwise.
+     */
+    public void setVisible(boolean visible)
+    {
+        frame.setVisible(visible);
+    }
+
+    /**
+     * Make the frame for the user interface.
+     */
+        private void makeSetFrame()
+    {
+        setFrame = new JFrame(calc.getTitle());
+        
+        JPanel contentPane = (JPanel)setFrame.getContentPane();
+        contentPane.setLayout(new BorderLayout(3, 1));
+        contentPane.setBorder(new EmptyBorder( 10, 10, 10, 10));
+        
+        JPanel displayPanel = new JPanel(new GridLayout(3, 1));
+        displayInputOne = new JTextField();
+        displayInputTwo = new JTextField();
+        displayOutput = new JTextField();
+        
+        displayPanel.add(displayInputOne, BorderLayout.NORTH);
+        displayPanel.add(displayInputTwo, BorderLayout.CENTER);
+        displayPanel.add(displayOutput, BorderLayout.SOUTH);
+        contentPane.add(displayPanel, BorderLayout.NORTH);
+
+        JPanel buttonPanel = new JPanel(new GridLayout(5, 5));
+            addButton(buttonPanel, "Push");
+        contentPane.add(buttonPanel, BorderLayout.CENTER);
+
+        status = new JLabel(calc.getAuthor());
+        contentPane.add(status, BorderLayout.SOUTH);
+
+        setFrame.pack();
+    }
+    private void makeHexFrame()
+    {
+        hexFrame = new JFrame(calc.getTitle());
+        
+        JPanel contentPane = (JPanel)hexFrame.getContentPane();
+        contentPane.setLayout(new BorderLayout(8, 8));
+        contentPane.setBorder(new EmptyBorder( 10, 10, 10, 10));
+
+        display = new JTextField();
+        contentPane.add(display, BorderLayout.NORTH);
+
+        JPanel buttonPanel = new JPanel(new GridLayout(5, 5));
+            addButton(buttonPanel, "Del");
+            addButton(buttonPanel, "HEX");
+            addButton(buttonPanel, "=");
+            addButton(buttonPanel, "SET");
+            addButton(buttonPanel, "?");            
+            
+            addButton(buttonPanel, "*");            
+            addButton(buttonPanel, "+");            
+            addButton(buttonPanel, "-");
+            buttonPanel.add(new JLabel(" "));
+            addButton(buttonPanel, "0");
+            
+            addButton(buttonPanel, "1");
+            addButton(buttonPanel, "2");
+            addButton(buttonPanel, "3"); 
+            addButton(buttonPanel, "4");
+            addButton(buttonPanel, "5");
+            
+            addButton(buttonPanel, "6");
+            addButton(buttonPanel, "7");
+            addButton(buttonPanel, "8");
+            addButton(buttonPanel, "9");
+            addButton(buttonPanel, "A");
+            
+            addButton(buttonPanel, "B");
+            addButton(buttonPanel, "C");
+            addButton(buttonPanel, "D");
+            addButton(buttonPanel, "E");
+            addButton(buttonPanel, "F");
+        contentPane.add(buttonPanel, BorderLayout.CENTER);
+
+        status = new JLabel(calc.getAuthor());
+        contentPane.add(status, BorderLayout.SOUTH);
+
+        hexFrame.pack();
+    }
+    private void makeFrame()
+    {
+        frame = new JFrame(calc.getTitle());
+        
+        JPanel contentPane = (JPanel)frame.getContentPane();
+        contentPane.setLayout(new BorderLayout(8, 8));
+        contentPane.setBorder(new EmptyBorder( 10, 10, 10, 10));
+
+        display = new JTextField();
+        contentPane.add(display, BorderLayout.NORTH);
+
+        JPanel buttonPanel = new JPanel(new GridLayout(6, 3));
+            addButton(buttonPanel, "Del");
+            addButton(buttonPanel, "HEX");
+            addButton(buttonPanel, "=");
+            
+            addButton(buttonPanel, "*");            
+            addButton(buttonPanel, "+");
+            addButton(buttonPanel, "-");
+            
+            addButton(buttonPanel, "?");
+            addButton(buttonPanel, "SET");            
+            addButton(buttonPanel, "0");
+            
+            addButton(buttonPanel, "1");
+            addButton(buttonPanel, "2");
+            addButton(buttonPanel, "3");
+            
+            addButton(buttonPanel, "4");
+            addButton(buttonPanel, "5");
+            addButton(buttonPanel, "6");
+            
+            addButton(buttonPanel, "7");            
+            addButton(buttonPanel, "8");
+            addButton(buttonPanel, "9");
+        contentPane.add(buttonPanel, BorderLayout.CENTER);
+
+        status = new JLabel(calc.getAuthor());
+        contentPane.add(status, BorderLayout.SOUTH);
+
+        frame.pack();
+    }
+
+
+    /**
+     * Add a button to the button panel.
+     * @param panel The panel to receive the button.
+     * @param buttonText The text for the button.
+     */
+    private void addButton(Container panel, String buttonText)
+    {
+        JButton button = new JButton(buttonText);
+        button.addActionListener(this);
+        panel.add(button);
+    }
+
+    /**
+     * An interface action has been performed.
+     * Find out what it was and handle it.
+     * @param event The event that has occured.
+     */
+    public void actionPerformed(ActionEvent event)
+    {
+        String command = event.getActionCommand();
+        if ( hex == true ) {
+                switch (command) {
+                    case "A":
+                        calc.numberPressed(10);
+                        break;
+                    case "B":
+                        calc.numberPressed(11);
+                        break;
+                    case "C":
+                        calc.numberPressed(12);
+                        break;
+                    case "D":
+                        calc.numberPressed(13);
+                        break;
+                    case "E":
+                        calc.numberPressed(14);
+                        break;
+                    case "F":
+                        calc.numberPressed(15);
+                        break;
+                    default:
+                        break;
+                }
+        }
+        if(
+                command.equals("0") ||
+                command.equals("1") ||
+                command.equals("2") ||
+                command.equals("3") ||
+                command.equals("4") ||
+                command.equals("5") ||
+                command.equals("6") ||
+                command.equals("7") ||
+                command.equals("8") ||
+                command.equals("9")) {
+                int number = Integer.parseInt(command);
+                calc.numberPressed(number);
+        }
+        else if(command.equals("HEX")) {
+            hex = !hex;
+            if (hex)
+            {
+                frame.setVisible(false);
+                hexFrame.setVisible(true);
+                setFrame.setVisible(false);
+            }
+            else {
+                frame.setVisible(true);
+                hexFrame.setVisible(false);
+                setFrame.setVisible(false);
+            }
+        }
+        else if(command.equals("SET")) {
+            set = !set;
+            if (set)
+            {
+                frame.setVisible(false);
+                hexFrame.setVisible(false);
+                setFrame.setVisible(true);
+            }
+            else {
+                frame.setVisible(true);
+                hexFrame.setVisible(false);
+                setFrame.setVisible(false);
+            }
+        }
+        else if(command.equals("+")) {
+            calc.plus();
+        }
+        else if(command.equals("*")) {
+            calc.multiply();
+        }
+        else if(command.equals("-")) {
+            calc.minus();
+        }
+        else if(command.equals("=")) {
+            calc.equals();
+        }
+        else if(command.equals("Del")) {
+            calc.clear();
+        }
+        else if(command.equals("?")) {
+            showInfo();
+        }
+        else if(command.equals("Push")) {
+            String newString = getDisplay();
+            customSet = new CustomSet(newString);
+            customSet.push(newString);
+        }
+        // else unknown command.
+
+        redisplay();
+    }
+
+    /**
+     * Update the interface display to show the current value of the 
+     * calculator.
+     */
+    private void redisplay()
+    {
+        if ( hex ) {
+            display.setText("" + calc.getDisplayValueInHex());
+        }
+        else {
+            display.setText("" + calc.getDisplayValue());
+        }
+    }
+
+    /**
+     * Toggle the info display in the calculator's status area between the
+     * author and version information.
+     */
+    private void showInfo()
+    {
+        if(showingAuthor)
+            status.setText(calc.getVersion());
+        else
+            status.setText(calc.getAuthor());
+
+        showingAuthor = !showingAuthor;
+    }
+    public String getDisplay()
+    {
+        String newString = display.getText();
+        return newString;
+    }
 }

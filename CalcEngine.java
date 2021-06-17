@@ -119,10 +119,10 @@ public class CalcEngine
             lastOperator = '?';
             buildingDisplayValue = false;
         }
-        else if (Calculator.gui.getDisplay() != null)
+        else if (Calculator.gui.getDisplay(Calculator.gui.display) != null)
         {
             try {
-                displayValue = evaluate(Calculator.gui.getDisplay());
+                displayValue = evaluate(Calculator.gui.getDisplay(Calculator.gui.display));
             }
             catch(Exception e) {
                 System.out.println("An Error has occurred.");

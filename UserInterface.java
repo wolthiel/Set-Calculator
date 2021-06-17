@@ -25,6 +25,7 @@ public class UserInterface
     private JTextField displayInputTwo;
     private JTextField displayOutput;
     private JLabel status;
+    private CustomSet customSet;
     public static boolean hex = false;
     public static boolean set = false;
 
@@ -75,35 +76,7 @@ public class UserInterface
         contentPane.add(displayPanel, BorderLayout.NORTH);
 
         JPanel buttonPanel = new JPanel(new GridLayout(5, 5));
-            addButton(buttonPanel, "Del");
-            addButton(buttonPanel, "HEX");
-            addButton(buttonPanel, "=");
-            addButton(buttonPanel, "SET");
-            addButton(buttonPanel, "?");            
-            
-            addButton(buttonPanel, "*");            
-            addButton(buttonPanel, "+");            
-            addButton(buttonPanel, "-");
-            buttonPanel.add(new JLabel(" "));
-            addButton(buttonPanel, "0");
-            
-            addButton(buttonPanel, "1");
-            addButton(buttonPanel, "2");
-            addButton(buttonPanel, "3"); 
-            addButton(buttonPanel, "4");
-            addButton(buttonPanel, "5");
-            
-            addButton(buttonPanel, "6");
-            addButton(buttonPanel, "7");
-            addButton(buttonPanel, "8");
-            addButton(buttonPanel, "9");
-            addButton(buttonPanel, "A");
-            
-            addButton(buttonPanel, "B");
-            addButton(buttonPanel, "C");
-            addButton(buttonPanel, "D");
-            addButton(buttonPanel, "E");
-            addButton(buttonPanel, "F");
+            addButton(buttonPanel, "Push");
         contentPane.add(buttonPanel, BorderLayout.CENTER);
 
         status = new JLabel(calc.getAuthor());
@@ -265,13 +238,11 @@ public class UserInterface
             hex = !hex;
             if (hex)
             {
-                makeHexFrame();
                 frame.setVisible(false);
                 hexFrame.setVisible(true);
                 setFrame.setVisible(false);
             }
             else {
-                makeFrame();
                 frame.setVisible(true);
                 hexFrame.setVisible(false);
                 setFrame.setVisible(false);
@@ -281,13 +252,11 @@ public class UserInterface
             set = !set;
             if (set)
             {
-                makeSetFrame();
                 frame.setVisible(false);
                 hexFrame.setVisible(false);
                 setFrame.setVisible(true);
             }
             else {
-                makeFrame();
                 frame.setVisible(true);
                 hexFrame.setVisible(false);
                 setFrame.setVisible(false);
@@ -310,6 +279,11 @@ public class UserInterface
         }
         else if(command.equals("?")) {
             showInfo();
+        }
+        else if(command.equals("Push")) {
+            String newString = getDisplay();
+            customSet = new CustomSet(newString);
+            customSet.push(newString);
         }
         // else unknown command.
 

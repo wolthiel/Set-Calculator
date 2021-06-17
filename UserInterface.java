@@ -20,7 +20,7 @@ public class UserInterface
     private JFrame frame;
     private JFrame hexFrame;
     private JFrame setFrame;
-    private JTextField display;
+    public JTextField display;
     private JTextField displayInputOne;
     private JTextField displayInputTwo;
     private JTextField displayOutput;
@@ -77,6 +77,7 @@ public class UserInterface
 
         JPanel buttonPanel = new JPanel(new GridLayout(5, 5));
             addButton(buttonPanel, "Push");
+            addButton(buttonPanel, "SetAddition");
         contentPane.add(buttonPanel, BorderLayout.CENTER);
 
         status = new JLabel(calc.getAuthor());
@@ -281,9 +282,16 @@ public class UserInterface
             showInfo();
         }
         else if(command.equals("Push")) {
-            String newString = getDisplay();
+            String newString = getDisplay(displayInputOne);
             customSet = new CustomSet(newString);
             customSet.push(newString);
+        }
+        else if(command.equals("SetAddition")){
+            String newString1 = getDisplay(displayInputOne);
+            String newString2 = getDisplay(displayInputTwo);
+            customSet = new CustomSet(newString1);
+            customSet.push(newString1);
+            customSet.push(newString2);
         }
         // else unknown command.
 
@@ -317,9 +325,9 @@ public class UserInterface
 
         showingAuthor = !showingAuthor;
     }
-    public String getDisplay()
+    public String getDisplay(JTextField inputDisplay)
     {
-        String newString = display.getText();
+        String newString = inputDisplay.getText();
         return newString;
     }
 }

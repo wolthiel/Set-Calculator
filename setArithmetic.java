@@ -45,20 +45,30 @@ public class setArithmetic
     return output.toString();
   }
 
-  public String setDifference(String set1, String set2) 
-  {
-	String newString = "";
-      Set<String> numbers = new HashSet<>();
-    	numbers.add(set1);
+  public String setDifference(String set1, String set2)  {
+	    Set<Integer> numbers = new HashSet<>();
+	    Scanner input = new Scanner(set1);
+	    input.useDelimiter("");
+	    while (input.hasNextLine()) {
+	    	if (input.hasNextInt())
+	    		numbers.add(input.nextInt());	
+	    }
+	    
+	    Set<Integer> primeNumbers = new HashSet<>();
+	    Scanner input2 = new Scanner(set2);
+	    input2.useDelimiter("");
+	    while (input2.hasNextLine()) {
+	    	if (input2.hasNextInt())
+	    		primeNumbers.add(input2.nextInt());	
+	    }
 
-	Set<String> primeNumbers = new HashSet<>();
-    primeNumbers.add(set2);
+	    String newString = "";
+	    numbers.removeAll(primeNumbers);
+	    Object[] array = numbers.toArray();
+	    for (int i = 0; i < array.length; i++){
+	        newString = newString + array[i];
+	    }
+	    return newString;
+	}
 
-    numbers.removeAll(primeNumbers);
-    Object[] array = numbers.toArray();
-    for (int i = 0; i < array.length; i++){
-        newString = newString + array[i];
-    }
-    return newString;
-  }
 }

@@ -14,10 +14,9 @@ public class CustomSet
     /**
      * Constructor for objects of class CustomSet
      */
-    public CustomSet(String input)
+    public CustomSet()
     {
         // initialise instance variables
-        String newSet = input;
         newStack = new StackAsList();
     }
     

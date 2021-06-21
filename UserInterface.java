@@ -26,6 +26,7 @@ public class UserInterface
     private JTextField displayOutput;
     private JLabel status;
     private CustomSet customSet;
+    private SetIntersectionIdentifier siid;
     public static boolean hex = false;
     public static boolean set = false;
 
@@ -77,7 +78,9 @@ public class UserInterface
 
         JPanel buttonPanel = new JPanel(new GridLayout(5, 5));
             addButton(buttonPanel, "Push");
+            addButton(buttonPanel, "Show number of Set elements");
             addButton(buttonPanel, "SetAddition");
+            addButton(buttonPanel, "Set Intersection");
         contentPane.add(buttonPanel, BorderLayout.CENTER);
 
         status = new JLabel(calc.getAuthor());
@@ -283,15 +286,53 @@ public class UserInterface
         }
         else if(command.equals("Push")) {
             String newString = getDisplay(displayInputOne);
-            customSet = new CustomSet(newString);
+            customSet = new CustomSet();
             customSet.push(newString);
         }
         else if(command.equals("SetAddition")){
             String newString1 = getDisplay(displayInputOne);
             String newString2 = getDisplay(displayInputTwo);
-            customSet = new CustomSet(newString1);
+            customSet = new CustomSet();
             customSet.push(newString1);
             customSet.push(newString2);
+        }
+        else if(command.equals("Show number of Set elements")){
+            String newString = getDisplay(displayInputOne);
+            char ch[] = newString.toCharArray();
+            int x = ch.length;
+            displayOutput.setText("Number of elements in set: " + x);
+        }
+        else if(command.equals("Set Intersection")){
+            String newString1 = getDisplay(displayInputOne);
+            String newString2 = getDisplay(displayInputTwo);
+            boolean s1E = false;
+            if (newString1 == "")
+            {
+                s1E = true;
+            }
+            boolean s2E = false;
+            if (newString2 == "")
+            {
+                s2E = true;
+            }
+            if (s1E && s2E)
+            {
+                displayOutput.setText("No input identified");
+            }
+            else if (s1E)
+            {
+                displayOutput.setText(newString2);
+            }
+            else if (s2E)
+            {
+                displayOutput.setText(newString1);
+            }
+            else {
+                //displayOutput.setText("Test successful" );
+                SetIntersectionIdentifier sid = new SetIntersectionIdentifier(newString1, newString2);
+                String resultString = sid.calculate();
+                displayOutput.setText(resultString);
+            }
         }
         // else unknown command.
 

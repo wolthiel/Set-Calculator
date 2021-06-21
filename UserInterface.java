@@ -79,7 +79,8 @@ public class UserInterface
         JPanel buttonPanel = new JPanel(new GridLayout(5, 5));
             addButton(buttonPanel, "Push");
             addButton(buttonPanel, "Show number of Set elements");
-            addButton(buttonPanel, "SetAddition");
+            addButton(buttonPanel, "Set Addition");
+            addButton(buttonPanel, "Set Subtraction");
             addButton(buttonPanel, "Set Intersection");
         contentPane.add(buttonPanel, BorderLayout.CENTER);
 
@@ -289,12 +290,19 @@ public class UserInterface
             customSet = new CustomSet();
             customSet.push(newString);
         }
-        else if(command.equals("SetAddition")){
+        else if(command.equals("Set Addition")){
             String newString1 = getDisplay(displayInputOne);
             String newString2 = getDisplay(displayInputTwo);
-            customSet = new CustomSet();
-            customSet.push(newString1);
-            customSet.push(newString2);
+            setArithmetic sa = new setArithmetic();
+            String newString3 = sa.union(newString1, newString2);
+            displayOutput.setText(newString3);
+        }
+        else if(command.equals("Set Subtraction")){
+            String newString1 = getDisplay(displayInputOne);
+            String newString2 = getDisplay(displayInputTwo);
+            setArithmetic sa = new setArithmetic();
+            String newString3 = sa.setDifference(newString1, newString2);
+            displayOutput.setText(newString3);
         }
         else if(command.equals("Show number of Set elements")){
             String newString = getDisplay(displayInputOne);

@@ -5,30 +5,16 @@ import java.util.Set;
 import java.util.Vector;
 import java.lang.Double;
 import java.lang.Integer;
-public class union 
+public class setArithmetic 
 {
 
-    public void union (String set1, String set2)
+    public String union (String set1, String set2)
 	{
 		// Arrays.sort(set1.toCharArray()); // Does not work... again... Thank you Java...
 		String set3 = removeDups(set1 + set2);
-		Scanner input = new Scanner(set3);
 		String unionSet = "";
 
-		// Should work, too, but Double and Integer cannot be found despite imported...
-		while (input.hasNext())
-		{
-			if (input.hasNextInt())
-			{
-				unionSet = unionSet + Integer(input.nextInt()).toString() + " ";
-			}
-			else if (input.hasNextDouble())
-			{
-				unionSet = unionSet + Double(input.nextDouble()).toString() + " ";
-			}
-		}
-
-		System.out.println(unionSet);
+		return set3;
 	}
 
 	public void subtractSets (String set1, String set2)
@@ -59,27 +45,20 @@ public class union
     return output.toString();
   }
 
-  public void setDifference() 
+  public String setDifference(String set1, String set2) 
   {
-	  Set<Integer> numbers = new HashSet<>();
-    	numbers.add(1);
-    	numbers.add(2);
-    	numbers.add(3);
-    	numbers.add(4);
+	String newString = "";
+      Set<String> numbers = new HashSet<>();
+    	numbers.add(set1);
 
-	Set<Integer> primeNumbers = new HashSet<>();
-    primeNumbers.add(2);
-    primeNumbers.add(3);
+	Set<String> primeNumbers = new HashSet<>();
+    primeNumbers.add(set2);
 
     numbers.removeAll(primeNumbers);
-    System.out.println("Numbers without prime numbers: " + numbers);
+    Object[] array = numbers.toArray();
+    for (int i = 0; i < array.length; i++){
+        newString = newString + array[i];
+    }
+    return newString;
   }
-
-	public static void main (String args[])
-	{
-		union u1 = new union();
-		u1.union("3 1 3", "1 3 2");
-		setDifference();
-		return;
-	}
 }

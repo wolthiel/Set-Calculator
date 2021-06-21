@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.target=setArithmetic
+comment1.params=set1\ set2
+comment1.target=java.lang.String\ union(java.lang.String,\ java.lang.String)
+comment2.params=set1\ set2
+comment2.target=void\ subtractSets(java.lang.String,\ java.lang.String)
+comment3.params=word
+comment3.target=java.lang.String\ removeDups(java.lang.String)
+comment3.text=\r\n\ Java\ method\ to\ remove\ duplicate\ characters\ from\ String\ This\ method\ uses\ a\r\n\ HashSet\ collection\ to\ get\ rid\ of\ duplicate\ characters.\r\n\r\n\ @param\ word\r\n\ @return\ String\ without\ duplicate\ characters\r\n
+comment4.params=set1\ set2
+comment4.target=java.lang.String\ setDifference(java.lang.String,\ java.lang.String)
+numComments=5
